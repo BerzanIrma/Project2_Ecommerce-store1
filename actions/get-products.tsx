@@ -1,53 +1,64 @@
-import { Product } from "@/types";
-import qs from "query-string";
+import { Product } from '@/types'
+import qs from 'query-string'
 
- interface Query{
-        categoryId?: string;
-        colorId?: string;
-        sizeId?: string;
-       isFeaturedId?: boolean;
-    }
+// Extract store ID from the URL and build correct API endpoint
+const storeUrl = process.env.NEXT_PUBLIC_API_URL;
+const storeId = storeUrl?.split('/').pop();
+const URL = `http://localhost:3000/api/${storeId}/products`;
 
-const getProducts = async (query: Query): Promise<Product[]> => {
-    // Extract store ID from the URL and build correct API endpoint
-    const storeUrl = process.env.NEXT_PUBLIC_API_URL;
-    console.log("Store URL from env:", storeUrl);
-    
-    // If URL is like http://localhost:3000/api/stores/STORE_ID, extract the STORE_ID
-    const storeId = storeUrl?.split('/').pop();
-    console.log("Store ID:", storeId);
-    
-    const baseApiUrl = `http://localhost:3000/api/${storeId}/products`;
-    
-    const url = qs.stringifyUrl({
-        url: baseApiUrl,
-        query: {
-            colorId: query.colorId,
-            sizeId: query.sizeId,
-            categoryId: query.categoryId,
-            isFeatured: query.isFeaturedId,
-        },
-    });
-    
-    console.log("Trying API URL with query:", url);
-    
-    try {
-        const res = await fetch(url);
-        console.log("Response status:", res.status);
-        
-        if (!res.ok) {
-            throw new Error(`API returned status: ${res.status}`);
-        }
-        
-        const data = await res.json();
-        console.log("Products data:", data);
-        
-        return data;
-    } catch (error) {
-        console.error("Error fetching products:", error);
-        // Return empty array if API fails
-        return [];
-    }
-};
+interface Query {
+  categoryId?: string
+  colorId?: string
+  sizeId?: string
+  isFeatured?: boolean
+}
+
+export const getProducts = async (query: Query): Promise<Product[]> => {
+  const url = qs.stringifyUrl({
+    url: URL,
+    query: {
+      categoryId: query.categoryId,
+      colorId: query.colorId,
+      sizeId: query.sizeId,
+      isFeatured: query.isFeatured,
+    },
+  })
+
+  const res = await fetch(url)
+  const data = await res.json()
+
+  // Manual filtering since API doesn't support it yet
+  let filteredData = data;
+
+  // Filter by categoryId
+  if (query.categoryId) {
+    filteredData = filteredData.filter((product: any) => 
+      product.categoryId === query.categoryId
+    );
+  }
+
+  // Filter by isFeatured
+  if (query.isFeatured !== undefined) {
+    filteredData = filteredData.filter((product: any) => 
+      product.isFeatured === query.isFeatured
+    );
+  }
+
+  // Filter by colorId
+  if (query.colorId) {
+    filteredData = filteredData.filter((product: any) => 
+      product.colorId === query.colorId
+    );
+  }
+
+  // Filter by sizeId
+  if (query.sizeId) {
+    filteredData = filteredData.filter((product: any) => 
+      product.sizeId === query.sizeId
+    );
+  }
+
+  return filteredData;
+}
 
 export default getProducts;
