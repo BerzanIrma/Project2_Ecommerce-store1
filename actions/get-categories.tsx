@@ -6,7 +6,7 @@ export const getCategories = async (): Promise<Category[]> => {
     console.log("Store URL from env:", storeUrl);
     
     // If URL is like http://localhost:3000/api/stores/STORE_ID, extract the STORE_ID
-    const storeId = storeUrl?.split('/').pop() || '75da612b-161b-4112-82ff-28cc32efb6e8';
+    const storeId = storeUrl?.split('/').pop();
     console.log("Store ID:", storeId);
     
     const apiUrl = `http://localhost:3000/api/${storeId}/categories`;
@@ -29,4 +29,6 @@ export const getCategories = async (): Promise<Category[]> => {
         // Return empty array if API fails
         return [];
     }
-}
+};
+
+export default getCategories;
