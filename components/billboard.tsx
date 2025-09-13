@@ -8,17 +8,8 @@ export const Billboard: React.FC<BillboardProps> = ({
      data
      }) => {
   if (!data) {
-    console.log('Billboard: No data provided');
     return null;
   }
-
-  console.log('Billboard data:', {
-    id: data.id,
-    label: data.label,
-    hasImageUrl: !!data.imageUrl,
-    imageUrlLength: data.imageUrl?.length || 0,
-    imageStart: data.imageUrl?.substring(0, 50)
-  });
 
   return (
     <div className="p-4 sm:p-6 lg:p-8 rounded-xl overflow-hidden">

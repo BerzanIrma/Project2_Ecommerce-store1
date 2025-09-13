@@ -25,20 +25,23 @@ const CategoryPage: React.FC<CategoryPageProps> = async ({
   params,
   searchParams,
 }) => {
+  const awaitedParams = await params
+  const awaitedSearchParams = await searchParams
+  
   const products = await getProducts({
-    categoryId: params.categoryId,
-    colorId: searchParams.colorId,
-    sizeId: searchParams.sizeId,
+    categoryId: awaitedParams.categoryId,
+    colorId: awaitedSearchParams.colorId,
+    sizeId: awaitedSearchParams.sizeId,
   })
 
   const sizes = await getSizes()
   const colors = await getColors()
-  const category = await getCategory(params.categoryId)
+  const category = await getCategory(awaitedParams.categoryId)
 
   return (
     <div className="bg-white">
       <Container>
-        <Billboard data={category.billboard} />
+        <Billboard data={category?.billboard} />
 
         <div className="px-4 sm:px-6 lg:px-8 pb-24">
           <div className="lg:grid lg:grid-cols-5 lg:gap-x-8">
