@@ -1,12 +1,12 @@
 import { Billboard } from "@/types";
 
-const getBillboard = async (id: string): Promise<Billboard> => {
+export default async function getBillboard(id: string): Promise<Billboard> {
     // Extract store ID from the URL and build correct API endpoint
     const storeUrl = process.env.NEXT_PUBLIC_API_URL;
     console.log("Store URL from env:", storeUrl);
     
     // If URL is like http://localhost:3000/api/stores/STORE_ID, extract the STORE_ID
-    const storeId = storeUrl?.split('/').pop();
+    const storeId = storeUrl?.split('/').pop() || '75da612b-161b-4112-82ff-28cc32efb6e8';
     console.log("Store ID:", storeId);
     
     const apiUrl = `http://localhost:3000/api/${storeId}/billboards/${id}`;
@@ -42,6 +42,4 @@ const getBillboard = async (id: string): Promise<Billboard> => {
             imageUrl: "https://via.placeholder.com/800x400/cccccc/666666?text=Billboard+Placeholder" 
         };
     }
-};
-
-export default getBillboard;
+}

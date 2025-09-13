@@ -7,14 +7,14 @@ import { Expand, ShoppingCart } from "lucide-react";
 import Currency from "@/components/ui/currency";
 import { useRouter } from "next/navigation";
 
-interface ProductCard {
+interface ProductCardProps {
   data: Product;
 }
 
 
 
 
-const ProductCard: React.FC<ProductCard> = ({
+const ProductCard: React.FC<ProductCardProps> = ({
     data
 }) => {
      

@@ -1,30 +1,17 @@
 import { Product } from "@/types";
 
-const getProduct = async (id: string): Promise<Product | null> => {
-    // Extract store ID from the URL and build correct API endpoint
-    const storeUrl = process.env.NEXT_PUBLIC_API_URL;
-    const storeId = storeUrl?.split('/').pop();
-    
-    const apiUrl = `http://localhost:3000/api/${storeId}/products/${id}`;
-    console.log("Fetching product from:", apiUrl);
-    
+export default async function getProduct(id: string): Promise<Product | null> {
     try {
+        const storeId = '75da612b-161b-4112-82ff-28cc32efb6e8';
+        const apiUrl = `http://localhost:3000/api/${storeId}/products/${id}`;
+        
         const res = await fetch(apiUrl);
-        
-        if (!res.ok) {
-            throw new Error(`API returned status: ${res.status}`);
+        if (res.ok) {
+            const product = await res.json();
+            return product;
         }
-        
-        const product = await res.json();
-        console.log("Product data:", product);
-        console.log("Product category:", product?.category);
-        console.log("Product categoryId:", product?.category?.id);
-        
-        return product;
+        return null;
     } catch (error) {
-        console.error("Error fetching product:", error);
         return null;
     }
-};
-
-export default getProduct;
+}
