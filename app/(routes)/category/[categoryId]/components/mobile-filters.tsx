@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Plus, X } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-import { IconButton } from "@/components/ui/icon-button";
+import IconButton from "@/components/ui/icon-button";
 import { Color, Size } from "@/types";
 
 import { Filter } from "./filter";

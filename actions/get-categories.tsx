@@ -1,11 +1,17 @@
 import { Category } from "@/types";
 
 export const getCategories = async (): Promise<Category[]> => {
-    const storeId = '75da612b-161b-4112-82ff-28cc32efb6e8';
+    const storeId = '8a053df6-eb77-4a17-b651-535fccee6a32';
     const apiUrl = `http://localhost:3000/api/${storeId}/categories`;
     
     try {
-        const res = await fetch(apiUrl);
+        const res = await fetch(apiUrl, {
+            signal: AbortSignal.timeout(15000),
+            cache: 'no-store',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
         
         if (!res.ok) {
             return [];
